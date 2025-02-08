@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; Image from "next/image";
 import axios from "axios";
-import Image from "next/image";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -38,13 +37,7 @@ export default function Home() {
           setError("An unknown error occurred.");
         }
       }
-        if (err instanceof Error) {
-          console.error("Error fetching NASA data:", err.message);
-          setError(`Failed to fetch satellite image: ${err.message}`);
-        } else {
-          console.error("Unknown error fetching NASA data.");
-          setError("An unknown error occurred.");
-        }
+}
       } finally {
         setLoading(false);
       }
@@ -62,16 +55,16 @@ export default function Home() {
         ) : error ? (
             <p className="text-red-500">{error}</p>
         ) : (
-            imageSrc && (
+            {imageSrc && (
                 <Image
                     src={imageSrc}
                     alt="NASA Satellite View"
                     width={800}
                     height={400}
-                    unoptimized={true} // Fixes Next.js dynamic image issues
+                    unoptimized={true}  // ✅ Fixes Next.js warning
                     className="w-full max-w-3xl rounded-lg shadow-lg"
                 />
-            )
+            )}
         )}
       </div>
   );
