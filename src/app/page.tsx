@@ -31,8 +31,10 @@ export default function Home() {
         setImageSrc(imageObjectURL);
       } catch (err) {
         if (err instanceof Error) {
+          console.error("Error fetching NASA data:", err.message);
           setError(`Failed to fetch satellite image: ${err.message}`);
         } else {
+          console.error("Unknown error fetching NASA data.");
           setError("An unknown error occurred.");
         }
       }
