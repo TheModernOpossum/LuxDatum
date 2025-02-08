@@ -29,7 +29,15 @@ export default function Home() {
         const imageBlob = response.data;
         const imageObjectURL = URL.createObjectURL(imageBlob);
         setImageSrc(imageObjectURL);
-      } catch (err) {
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error("Error fetching NASA data:", err.message);
+          setError(`Failed to fetch satellite image: ${err.message}`);
+        } else {
+          console.error("Unknown error fetching NASA data.");
+          setError("An unknown error occurred.");
+        }
+      }
         if (err instanceof Error) {
           console.error("Error fetching NASA data:", err.message);
           setError(`Failed to fetch satellite image: ${err.message}`);
