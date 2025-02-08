@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"; // 🔥 Removed useEffect import
+import { useState } from "react"; 
 import axios from "axios";
 import Image from "next/image";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
