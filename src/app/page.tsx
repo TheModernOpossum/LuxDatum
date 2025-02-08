@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react"; // 🔥 Removed useEffect import
 import axios from "axios";
 import Image from "next/image";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -64,81 +64,81 @@ export default function Home() {
   };
 
   return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
-        <h1 className="text-3xl font-bold mb-4">LuxDatum Earth Imagery</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
+      <h1 className="text-3xl font-bold mb-4">LuxDatum Earth Imagery</h1>
 
-        {/* Inputs for Coordinates and Date */}
-        <div className="flex flex-col gap-4 mb-6">
-          <div className="flex gap-4">
-            <input
-                type="number"
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-                placeholder="Latitude"
-                className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
-            />
-            <input
-                type="number"
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-                placeholder="Longitude"
-                className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
-            />
-          </div>
+      {/* Inputs for Coordinates and Date */}
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex gap-4">
           <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
+            type="number"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+            placeholder="Latitude"
+            className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
           />
-
-          {/* NASA Dataset Selector */}
-          <select
-              value={layer}
-              onChange={(e) => setLayer(e.target.value)}
-              className="p-2 bg-gray-800 border border-gray-700 rounded hover:shadow-lg transition-shadow text-white"
-          >
-            <option value="natural">🌍 Natural Color</option>
-            <option value="vegetation">🌱 Vegetation Index (NDVI)</option>
-            <option value="thermal">🔥 Thermal Infrared</option>
-          </select>
-
-          <button
-              onClick={fetchImage}
-              className="p-3 bg-blue-600 hover:bg-blue-500 rounded font-bold transition-transform transform hover:scale-105 hover:shadow-lg"
-          >
-            Fetch Image
-          </button>
+          <input
+            type="number"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+            placeholder="Longitude"
+            className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
+          />
         </div>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="p-2 bg-gray-800 border border-gray-700 rounded text-white"
+        />
 
-        {/* Interactive Map */}
-        <div className="w-full h-96 border border-gray-600 rounded-lg shadow-md">
-          <MapContainer center={[parseFloat(latitude), parseFloat(longitude)]} zoom={4} className="w-full h-full">
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={[parseFloat(latitude), parseFloat(longitude)]} />
-            <MapClickHandler />
-          </MapContainer>
-        </div>
+        {/* NASA Dataset Selector */}
+        <select
+          value={layer}
+          onChange={(e) => setLayer(e.target.value)}
+          className="p-2 bg-gray-800 border border-gray-700 rounded hover:shadow-lg transition-shadow text-white"
+        >
+          <option value="natural">🌍 Natural Color</option>
+          <option value="vegetation">🌱 Vegetation Index (NDVI)</option>
+          <option value="thermal">🔥 Thermal Infrared</option>
+        </select>
 
-        {/* Image Display */}
-        <div className="mt-6">
-          {loading ? (
-              <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-          ) : error ? (
-              <p className="text-red-500">{error}</p>
-          ) : (
-              imageSrc && (
-                  <Image
-                      src={imageSrc}
-                      alt="NASA Satellite View"
-                      width={800}
-                      height={400}
-                      unoptimized
-                      className="w-full max-w-3xl rounded-lg shadow-lg border border-gray-600"
-                  />
-              )
-          )}
-        </div>
+        <button
+          onClick={fetchImage}
+          className="p-3 bg-blue-600 hover:bg-blue-500 rounded font-bold transition-transform transform hover:scale-105 hover:shadow-lg"
+        >
+          Fetch Image
+        </button>
       </div>
+
+      {/* Interactive Map */}
+      <div className="w-full h-96 border border-gray-600 rounded-lg shadow-md">
+        <MapContainer center={[parseFloat(latitude), parseFloat(longitude)]} zoom={4} className="w-full h-full">
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker position={[parseFloat(latitude), parseFloat(longitude)]} />
+          <MapClickHandler />
+        </MapContainer>
+      </div>
+
+      {/* Image Display */}
+      <div className="mt-6">
+        {loading ? (
+          <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          imageSrc && (
+            <Image
+              src={imageSrc}
+              alt="NASA Satellite View"
+              width={800}
+              height={400}
+              unoptimized
+              className="w-full max-w-3xl rounded-lg shadow-lg border border-gray-600"
+            />
+          )
+        )}
+      </div>
+    </div>
   );
 }
