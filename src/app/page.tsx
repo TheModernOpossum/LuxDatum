@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import axios from "axios";
+import Image from "next/image";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export default function Home() {
         const imageBlob = response.data;
         const imageObjectURL = URL.createObjectURL(imageBlob);
         setImageSrc(imageObjectURL);
-      } catch (err: unknown) {
+      } catch (err: unknown) {  // ✅ Fixed TypeScript error
         if (err instanceof Error) {
           console.error("Error fetching NASA data:", err.message);
           setError(`Failed to fetch satellite image: ${err.message}`);
@@ -37,27 +37,34 @@ export default function Home() {
           console.error("Unknown error fetching NASA data.");
           setError("An unknown error occurred.");
         }
+      } finally {
+        setLoading(false);
       }
-      }
-      finally {
-      }
-          setLoading(false);
-        }
     };
 
     fetchImage();
   }, []);
 
-  return <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-    <h1 className="text-3xl font-bold mb-4">LuxDatum Earth Imagery</h1>
+  return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+        <h1 className="text-3xl font-bold mb-4">LuxDatum Earth Imagery</h1>
 
-    {loading ? <p>Loading satellite image...</p> : error ? <p className="text-red-500">{error}</p> : imageSrc && (
-            <Image
-                src={imageSrc}
-                alt="NASA Satellite View"
-                width={800}
-                height={400}
-                unoptimized={true}  // ✅ Fixes Next.js warning
-                className="w-full max-w-3xl rounded-lg shadow-lg"
-            />
-        ))}
+        {loading ? (
+            <p>Loading satellite image...</p>
+        ) : error ? (
+            <p className="text-red-500">{error}</p>
+        ) : (
+            imageSrc && (
+                <Image
+                    src={imageSrc}
+                    alt="NASA Satellite View"
+                    width={800}
+                    height={400}
+                    unoptimized={true}  // ✅ Fixes Next.js warning
+                    className="w-full max-w-3xl rounded-lg shadow-lg"
+                />
+            )
+        )}
+      </div>
+  );
+}
