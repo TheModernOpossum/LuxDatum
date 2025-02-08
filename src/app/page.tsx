@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -28,7 +29,13 @@ export default function Home() {
         const imageBlob = response.data;
         const imageObjectURL = URL.createObjectURL(imageBlob);
         setImageSrc(imageObjectURL);
-      } catch (err: any) {
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(`Failed to fetch satellite image: ${err.message}`);
+        } else {
+          setError("An unknown error occurred.");
+        }
+      }
         console.error("Error fetching NASA data:", err.message);
         setError("Failed to fetch satellite image.");
       } finally {
@@ -48,7 +55,12 @@ export default function Home() {
         ) : error ? (
             <p className="text-red-500">{error}</p>
         ) : (
-            imageSrc && <img src={imageSrc} alt="NASA Satellite View" className="w-full max-w-3xl rounded-lg shadow-lg" />
+            imageSrc && <img
+                src={imageSrc}
+                alt="NASA Satellite View"
+                width={800}
+                height={400}
+                className="w-full max-w-3xl rounded-lg shadow-lg"
         )}
       </div>
   );
