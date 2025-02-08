@@ -37,9 +37,6 @@ export default function Home() {
           console.error("Unknown error fetching NASA data.");
           setError("An unknown error occurred.");
         }
-      }
-        console.error("Error fetching NASA data:", err.message);
-        setError("Failed to fetch satellite image.");
       } finally {
         setLoading(false);
       }
@@ -57,12 +54,16 @@ export default function Home() {
         ) : error ? (
             <p className="text-red-500">{error}</p>
         ) : (
-            imageSrc && <img
-                src={imageSrc}
-                alt="NASA Satellite View"
-                width={800}
-                height={400}
-                className="w-full max-w-3xl rounded-lg shadow-lg"
+            imageSrc && (
+                <Image
+                    src={imageSrc}
+                    alt="NASA Satellite View"
+                    width={800}
+                    height={400}
+                    unoptimized={true} // Fixes Next.js dynamic image issues
+                    className="w-full max-w-3xl rounded-lg shadow-lg"
+                />
+            )
         )}
       </div>
   );
