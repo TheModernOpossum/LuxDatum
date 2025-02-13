@@ -12,12 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-    title: "Lux~Datum : a NASA inspired API",
-    icons: {
-        icon: "/favicon.ico",
-        apple: "/apple-touch-icon.png",
-    },
+export const metadata: Metadata = {
+  title: "Lux~Datum",
+  description: "Satellite imagery via NASA api",
 };
 
 export default function RootLayout({
